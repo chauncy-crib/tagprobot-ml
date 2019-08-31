@@ -12,10 +12,10 @@ Install `virtualenv`:
 sudo apt install python3-venv
 ```
 
-Make a virtual environment:
+Make a virtual environment. We are using 3.7:
 
 ```
-python3 -m venv ENV
+python3.7 -m venv ENV
 ```
 
 Activate the virtual environment:
