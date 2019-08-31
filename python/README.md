@@ -1,5 +1,7 @@
 # Setup
 
+All our Python code is written using Python 3.7. The following instructions will set up a Python 3.7 virtual environment.
+
 If you don't have `pip3` installed (you can check with `pip3 --version`):
 
 ```
@@ -9,13 +11,13 @@ sudo apt install python3-pip
 Install `virtualenv`:
 
 ```
-sudo apt install python3-venv
+sudo apt install python3.7-venv
 ```
 
-Make a virtual environment:
+Make a virtual environment.
 
 ```
-python3 -m venv ENV
+python3.7 -m venv ENV
 ```
 
 Activate the virtual environment:
