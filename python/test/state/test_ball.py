@@ -18,3 +18,4 @@ class TestBall(TestCase):
     def test_draw_is_offset(self, ball):
         rect = ball.get_shape()[2]
         self.assertEqual(rect.left, ball.x - ball.radius)
+        self.assertEqual(rect.top, ball.y - ball.radius)
