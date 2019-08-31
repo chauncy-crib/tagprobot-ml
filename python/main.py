@@ -12,9 +12,9 @@ def main():
     screen = pygame.display.set_mode((400, 300))
     done = False
 
-    foe_ball = Ball(200, 200, uuid4(), Team.FOE)
-    friend_ball = Ball(100, 200, uuid4(), Team.FRIEND)
-    ego_ball = Ball(0, 0, uuid4(), Team.EGO)
+    foe_ball = Ball(200, 200, uuid4(), Team.FOE, 50, 50)
+    friend_ball = Ball(100, 200, uuid4(), Team.FRIEND, 50, -50)
+    ego_ball = Ball(0, 0, uuid4(), Team.EGO, 50, 50)
     flag = Flag(100, 100)
 
     world_state = State([foe_ball], [friend_ball], ego_ball, flag)
@@ -27,10 +27,11 @@ def main():
                 done = True
 
         screen.fill((0, 0, 0))
+        clock.tick(10)
+        delta_t_ms: int = clock.get_time()
+        world_state = world_state.next_state(delta_t_ms)
         world_state.draw(screen)
-
         pygame.display.flip()
-        clock.tick(60)
 
 
 if __name__ == "__main__":
