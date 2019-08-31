@@ -25,13 +25,16 @@ class Ball(Shape):
         else:
             raise ValueError("You must be self, friend, or foe!")
 
-        self.radius = 19  # pixels
+        # pixels
+        self.radius: int = 19
 
-        self.x = x
-        self.y = y
+        # pixels
+        self.x: int = x
+        self.y: int = y
 
-        self.vx = 0
-        self.vy = 0
+        # pixels/second
+        self.vx: int = 0
+        self.vy: int = 0
 
     def get_shape(self):
         return (pygame.draw.ellipse,
