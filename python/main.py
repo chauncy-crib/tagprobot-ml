@@ -8,5 +8,6 @@ def main():
     l.append(ball.x)
     print(l)
 
+
 if __name__ == "__main__":
     main()
