@@ -1,9 +1,9 @@
+from typing import Tuple
 from enum import Enum
 import pygame
-from typing import Tuple
 import uuid
 
-from visualization.drawable import Drawable
+from visualization.shape import Shape
 
 
 class Team(Enum):
@@ -12,12 +12,11 @@ class Team(Enum):
     FOE = 2
 
 
-class Ball(Drawable):
+class Ball(Shape):
     def __init__(self, x: int, y: int, team: Team) -> None:
         self.id = uuid.uuid4()
 
         self.team = team
-        self.color: Tuple[int, int, int] = (255, 255, 255)
         if self.team is Team.EGO:
             self.color = (255, 200, 0)
         elif self.team is Team.FRIEND:
@@ -36,7 +35,8 @@ class Ball(Drawable):
         self.vy = 0
 
     def get_shape(self):
-        return (pygame.draw.ellipse, self.color,
+        return (pygame.draw.ellipse,
+                self.color,
                 pygame.Rect(self.x - self.radius,
                             self.y - self.radius,
                             2*self.radius,

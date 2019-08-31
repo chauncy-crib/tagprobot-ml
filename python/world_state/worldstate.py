@@ -8,9 +8,12 @@ from .flag import Flag
 
 class WorldState:
     def __init__(
-            self, enemy_balls: List[Ball],
-            friendly_balls: List[Ball],
-            ego_ball: Ball, flag: Flag) -> None:
+        self,
+        enemy_balls: List[Ball],
+        friendly_balls: List[Ball],
+        ego_ball: Ball,
+        flag: Flag
+    ) -> None:
         assert(len(enemy_balls) <= 4)
         assert(len(friendly_balls) < 4)
 
