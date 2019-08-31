@@ -1,5 +1,6 @@
 import pygame
-from typing import List
+from typing import List, Dict
+import uuid
 
 from .ball import Ball
 from .flag import Flag
@@ -19,7 +20,7 @@ class WorldState:
         self.red_balls = friendly_balls
         self.ego_ball = ego_ball
 
-        self.balls = {}
+        self.balls: Dict[uuid.UUID, Ball] = {}
         for blue_ball in self.blue_balls:
             if blue_ball.id in self.balls:
                 raise ValueError(
