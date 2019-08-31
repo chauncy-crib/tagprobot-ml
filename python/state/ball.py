@@ -1,9 +1,8 @@
 from enum import Enum
 import pygame
-from typing import Tuple
 import uuid
 
-from visualization.drawable import Drawable
+from visualization.shape import Shape
 
 
 class Team(Enum):
@@ -12,12 +11,11 @@ class Team(Enum):
     FOE = 2
 
 
-class Ball(Drawable):
+class Ball(Shape):
     def __init__(self, x: int, y: int, team: Team) -> None:
         self.id = uuid.uuid4()
 
         self.team = team
-        self.color: Tuple[int, int, int] = (255, 255, 255)
         if self.team is Team.EGO:
             self.color = (255, 200, 0)
         elif self.team is Team.FRIEND:
@@ -27,16 +25,20 @@ class Ball(Drawable):
         else:
             raise ValueError("You must be self, friend, or foe!")
 
-        self.radius = 19  # pixels
+        # pixels
+        self.radius: int = 19
 
-        self.x = x
-        self.y = y
+        # pixels
+        self.x: int = x
+        self.y: int = y
 
-        self.vx = 0
-        self.vy = 0
+        # pixels/second
+        self.vx: int = 0
+        self.vy: int = 0
 
     def get_shape(self):
-        return (pygame.draw.ellipse, self.color,
+        return (pygame.draw.ellipse,
+                self.color,
                 pygame.Rect(self.x - self.radius,
                             self.y - self.radius,
                             2*self.radius,

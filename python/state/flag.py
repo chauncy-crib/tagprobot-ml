@@ -1,8 +1,8 @@
 import pygame
-from visualization.drawable import Drawable
+from visualization.shape import Shape
 
 
-class Flag(Drawable):
+class Flag(Shape):
     def __init__(self, x: int, y: int) -> None:
         self.side_length = 20
 

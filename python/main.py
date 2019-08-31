@@ -1,9 +1,8 @@
 import pygame
-from typing import List
 
-from world_state.ball import Ball, Team
-from world_state.flag import Flag
-from world_state.worldstate import WorldState
+from state.ball import Ball, Team
+from state.flag import Flag
+from state.state import State
 
 
 def main():
@@ -17,7 +16,7 @@ def main():
     ego_ball = Ball(0, 0, Team.EGO)
     flag = Flag(100, 100)
 
-    world_state = WorldState([foe_ball], [friend_ball], ego_ball, flag)
+    world_state = State([foe_ball], [friend_ball], ego_ball, flag)
 
     clock = pygame.time.Clock()
 
