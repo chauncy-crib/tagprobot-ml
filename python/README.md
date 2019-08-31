@@ -23,3 +23,25 @@ Activate the virtual environment:
 ```
 source ENV/bin/activate
 ```
+
+Install dependencies:
+
+```
+pip install -r requirements.txt
+```
+
+# Development
+
+## Installing packages
+
+If you add a package, make sure you update `requirements.txt` with:
+
+```
+pip freeze > requirements.txt
+```
+
+## Type checking
+
+```
+mypy . // can put any folder or .py file here
+```
