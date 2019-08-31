@@ -5,6 +5,7 @@ from world_state.ball import Ball
 from world_state.flag import Flag
 from world_state.worldstate import WorldState
 
+
 def main():
 
     pygame.init()
