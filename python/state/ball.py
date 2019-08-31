@@ -23,7 +23,6 @@ class Ball(Shape):
     vy: int = 0
     radius: int = 19
 
-
     def get_shape(self):
         if self.team is Team.EGO:
             color = (255, 200, 0)
