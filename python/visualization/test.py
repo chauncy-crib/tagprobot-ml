@@ -1,3 +1,4 @@
+from world_state import Ball
 import pygame
 
 pygame.init()
@@ -7,7 +8,6 @@ done = False
 # x = 30
 # y = 30
 
-from world_state import Ball
 
 ball = Ball(0, 0)
 
