@@ -1,12 +1,13 @@
 import pygame
 from typing import List, Dict
 import uuid
+from visualization.drawable import Drawable
 
 from .ball import Ball
 from .flag import Flag
 
 
-class State:
+class State(Drawable):
     def __init__(
         self,
         enemy_balls: List[Ball],
