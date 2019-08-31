@@ -8,4 +8,5 @@ install:
   - pip install -r requirements.txt
 script:
   - mypy . # run the type checker
+  - pycodestyle # run the code formatter
   - python main.py
