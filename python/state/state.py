@@ -6,7 +6,7 @@ from .ball import Ball
 from .flag import Flag
 
 
-class WorldState:
+class State:
     def __init__(
         self,
         enemy_balls: List[Ball],
