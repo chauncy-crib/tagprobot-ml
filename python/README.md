@@ -43,5 +43,5 @@ pip freeze > requirements.txt
 ## Type checking
 
 ```
-mypy . // can put any folder or .py file here
+mypy . # can put any folder or .py file here
 ```
