@@ -6,7 +6,7 @@ from visualization.drawable import Drawable
 
 
 class Ball(Drawable):
-    def __init__(self, x: int, y: int, color: Tuple[int]) -> None:
+    def __init__(self, x: int, y: int, color: Tuple[int, int, int]) -> None:
         self.id = uuid.uuid4()
 
         self.radius = 19  # pixels
