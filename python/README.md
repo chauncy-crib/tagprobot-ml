@@ -61,10 +61,13 @@ class Node:
 
 ## Immutability + Purity
 
-- Bias towards immutability + purity. For example, we tend to use [frozen dataclasses](https://docs.python.org/3/library/dataclasses.html) to represent immutable collections of data.
+- We bias towards immutability + purity. For example, we tend to use [frozen dataclasses](https://docs.python.org/3/library/dataclasses.html) to represent immutable collections of data.
 
 ```
 @dataclass(frozen=True)
 class MyClass:
+    x: int
+    y: int
+    s: str
     pass
 ```

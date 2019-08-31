@@ -3,7 +3,7 @@ from hypothesis import given
 import hypothesis.strategies as st
 from hypothesis.searchstrategy.strategies import SearchStrategy
 
-from state.ball import Ball, Team, radius
+from state.ball import Ball, Team
 
 
 # strategy for generating a random position between -1M and 1M
@@ -18,5 +18,5 @@ class TestBall(TestCase):
     @given(st_ball)
     def test_draw_is_offset(self, ball: Ball):
         rect = ball.get_shape()[2]
-        self.assertEqual(rect.left, ball.x - radius)
-        self.assertEqual(rect.top, ball.y - radius)
+        self.assertEqual(rect.left, ball.x - ball.radius)
+        self.assertEqual(rect.top, ball.y - ball.radius)

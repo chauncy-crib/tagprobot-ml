@@ -6,9 +6,6 @@ from dataclasses import dataclass, replace
 from visualization.shape import Shape
 
 
-radius: int = 19
-
-
 class Team(Enum):
     EGO = 0
     FRIEND = 1
@@ -24,6 +21,8 @@ class Ball(Shape):
     # velocities in pixels/second
     vx: int = 0
     vy: int = 0
+    radius: int = 19
+
 
     def get_shape(self):
         if self.team is Team.EGO:
@@ -36,10 +35,10 @@ class Ball(Shape):
             raise ValueError("You must be self, friend, or foe!")
         return (pygame.draw.ellipse,
                 color,
-                pygame.Rect(self.x - radius,
-                            self.y - radius,
-                            2*radius,
-                            2*radius))
+                pygame.Rect(self.x - self.radius,
+                            self.y - self.radius,
+                            2*self.radius,
+                            2*self.radius))
 
     def move(self, dt: int) -> 'Ball':
         return replace(self, x=self.x + (self.vx * dt // 1000), y=self.y + (self.vy * dt // 1000))
