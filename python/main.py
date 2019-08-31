@@ -1,4 +1,5 @@
 import pygame
+from uuid import uuid4
 
 from state.ball import Ball, Team
 from state.flag import Flag
@@ -11,9 +12,9 @@ def main():
     screen = pygame.display.set_mode((400, 300))
     done = False
 
-    foe_ball = Ball(200, 200, Team.FOE)
-    friend_ball = Ball(100, 200, Team.FRIEND)
-    ego_ball = Ball(0, 0, Team.EGO)
+    foe_ball = Ball(200, 200, uuid4(), Team.FOE)
+    friend_ball = Ball(100, 200, uuid4(), Team.FRIEND)
+    ego_ball = Ball(0, 0, uuid4(), Team.EGO)
     flag = Flag(100, 100)
 
     world_state = State([foe_ball], [friend_ball], ego_ball, flag)

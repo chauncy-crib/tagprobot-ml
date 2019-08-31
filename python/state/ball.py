@@ -1,8 +1,12 @@
 from enum import Enum
 import pygame
-import uuid
+from uuid import UUID
+from dataclasses import dataclass
 
 from visualization.shape import Shape
+
+
+radius: int = 19
 
 
 class Team(Enum):
@@ -11,35 +15,28 @@ class Team(Enum):
     FOE = 2
 
 
+@dataclass(frozen=True)
 class Ball(Shape):
-    def __init__(self, x: int, y: int, team: Team) -> None:
-        self.id = uuid.uuid4()
-
-        self.team = team
-        if self.team is Team.EGO:
-            self.color = (255, 200, 0)
-        elif self.team is Team.FRIEND:
-            self.color = (255, 0, 0)
-        elif self.team is Team.FOE:
-            self.color = (0, 0, 255)
-        else:
-            raise ValueError("You must be self, friend, or foe!")
-
-        # pixels
-        self.radius: int = 19
-
-        # pixels
-        self.x: int = x
-        self.y: int = y
-
-        # pixels/second
-        self.vx: int = 0
-        self.vy: int = 0
+    x: int
+    y: int
+    id: UUID
+    team: Team
+    # velocities in pixels/second
+    vx: int = 0
+    vy: int = 0
 
     def get_shape(self):
+        if self.team is Team.EGO:
+            color = (255, 200, 0)
+        elif self.team is Team.FRIEND:
+            color = (255, 0, 0)
+        elif self.team is Team.FOE:
+            color = (0, 0, 255)
+        else:
+            raise ValueError("You must be self, friend, or foe!")
         return (pygame.draw.ellipse,
-                self.color,
-                pygame.Rect(self.x - self.radius,
-                            self.y - self.radius,
-                            2*self.radius,
-                            2*self.radius))
+                color,
+                pygame.Rect(self.x - radius,
+                            self.y - radius,
+                            2*radius,
+                            2*radius))

@@ -1,19 +1,19 @@
 import pygame
+from dataclasses import dataclass
 from visualization.shape import Shape
 
+side_length = 20
+color = (255, 255, 153)
 
+
+@dataclass(frozen=True)
 class Flag(Shape):
-    def __init__(self, x: int, y: int) -> None:
-        self.side_length = 20
-
-        self.x = x
-        self.y = y
-
-        self.color = (255, 255, 153)
+    x: int
+    y: int
 
     def get_shape(self):
-        return (pygame.draw.rect, self.color,
-                pygame.Rect(self.x - 0.5*self.side_length,
-                            self.y - 0.5*self.side_length,
-                            self.side_length,
-                            self.side_length))
+        return (pygame.draw.rect, color,
+                pygame.Rect(self.x - 0.5*side_length,
+                            self.y - 0.5*side_length,
+                            side_length,
+                            side_length))
