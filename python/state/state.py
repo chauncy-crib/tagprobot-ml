@@ -18,7 +18,7 @@ class State:
         assert(len(friendly_balls) < 4)
 
         all_balls = enemy_balls + friendly_balls + [ego_ball]
-        ids: List[uuid.UUID] = list(map(lambda b: b.id, all_balls))
+        ids: List[uuid.UUID] = [b.id for b in all_balls]
         assert(len(set(ids)) == len(ids))
         self.balls: Dict[uuid.UUID, Ball] = dict(zip(ids, all_balls))
 
