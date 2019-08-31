@@ -17,7 +17,7 @@ def main():
     ego_ball = Ball(0, 0, Team.EGO)
     flag = Flag(100, 100)
 
-    world_state = WorldState([foe_ball], [friend_ball], ego_ball, flag, screen)
+    world_state = WorldState([foe_ball], [friend_ball], ego_ball, flag)
 
     clock = pygame.time.Clock()
 
