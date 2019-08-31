@@ -8,9 +8,7 @@ from state.ball import Ball, Team
 # some random position between -1M and 1M
 ball_position = st.integers(min_value=-1000000, max_value=1000000)
 
-"""
-hypothesis strategy for generating random balls
-"""
+# hypothesis strategy for generating random balls
 st_ball = st.builds(Ball, x=ball_position,
                     y=ball_position, team=st.sampled_from(Team))
 
