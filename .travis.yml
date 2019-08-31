@@ -1,0 +1,8 @@
+dist: bionic # use Ubuntu 18.04 as our build environment
+before_install:
+  - cd python
+install:
+  - pip install -r requirements.txt
+script:
+  - mypy . # run the type checker
+  - python main.py
