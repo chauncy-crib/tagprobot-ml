@@ -1,4 +1,3 @@
-from typing import Tuple
 from enum import Enum
 import pygame
 import uuid

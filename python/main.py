@@ -1,5 +1,4 @@
 import pygame
-from typing import List
 
 from state.ball import Ball, Team
 from state.flag import Flag

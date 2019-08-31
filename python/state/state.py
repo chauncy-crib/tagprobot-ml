@@ -1,4 +1,3 @@
-import pygame
 from typing import List, Dict
 import uuid
 from visualization.drawable import Drawable
