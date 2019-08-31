@@ -27,7 +27,7 @@ def main():
                 done = True
 
         screen.fill((0, 0, 0))
-        world_state.draw()
+        world_state.draw(screen)
 
         pygame.display.flip()
         clock.tick(60)
