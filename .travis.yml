@@ -9,3 +9,4 @@ install:
 script:
   - mypy . # run the type checker
   - flake8 # run the code formatter
+  - python -m unittest # run all unittests
