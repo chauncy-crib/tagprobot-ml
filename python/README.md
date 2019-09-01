@@ -27,10 +27,24 @@ Make sure you are in `tagprobot-ml/python/`, and have `ENV` activated.
 
 ## Linting + Testing
 
+We use `mypy` for type checking, `flake8` for style enforcement, and `unittest` for tests. You can run them like this:
+
 ```
 mypy . # type checker
 flake8 # style checker
 python -m unittest
+```
+
+There is also a script which runs all three:
+
+```
+./build
+```
+
+It can also auto-format code first:
+
+```
+./build --fix
 ```
 
 ## Installing packages
