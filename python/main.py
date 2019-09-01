@@ -5,6 +5,8 @@ from state.ball import Ball, Team
 from state.flag import Flag
 from state.state import State
 
+from input.input import Keys, Input
+
 
 def main():
 
@@ -14,7 +16,7 @@ def main():
 
     foe_ball = Ball(200, 200, uuid4(), Team.FOE, 50, 50)
     friend_ball = Ball(100, 200, uuid4(), Team.FRIEND, 50, -50)
-    ego_ball = Ball(0, 0, uuid4(), Team.EGO, 50, 50)
+    ego_ball = Ball(100, 150, uuid4(), Team.EGO, 50, 50)
     flag = Flag(100, 100)
 
     world_state = State([foe_ball] + [friend_ball] + [ego_ball], flag)
@@ -25,10 +27,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+        current_input = Input({ego_ball.id: Keys.from_pygame_pressed(pygame.key.get_pressed())})
 
         screen.fill((0, 0, 0))
         clock.tick(60)  # tagpro runs at 60hz
         delta_t_ms: int = clock.get_time()
+        world_state.handle_input(current_input)
         world_state.next_state(delta_t_ms)
         world_state.draw(screen)
         pygame.display.flip()
