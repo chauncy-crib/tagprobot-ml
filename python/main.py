@@ -27,7 +27,7 @@ def main():
                 done = True
 
         screen.fill((0, 0, 0))
-        clock.tick(100)
+        clock.tick(60) # tagpro runs at 60hz
         delta_t_ms: int = clock.get_time()
         world_state.next_state(delta_t_ms)
         world_state.draw(screen)
