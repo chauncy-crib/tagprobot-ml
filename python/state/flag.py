@@ -2,11 +2,11 @@ import pygame
 from dataclasses import dataclass
 from visualization.shape import Shape
 
-side_length = 20
+side_length = 30
 color = (255, 255, 153)
 
 
-@dataclass(frozen=True)
+@dataclass
 class Flag(Shape):
     x: int
     y: int

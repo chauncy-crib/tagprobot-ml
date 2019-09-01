@@ -31,7 +31,7 @@ class State(Drawable):
 
         self.flag.draw(screen)
 
-    def handle_inputs(self, input: Input) -> 'State':
+    def handle_inputs(self, input: Input) -> None:
         # TODO: implement this correctly in a subsequent PR
         return self
 

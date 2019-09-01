@@ -26,9 +26,9 @@ bad):
 1. profile_tuple: 0.14
 2. profile_point0: 0.18
 3. profile_point1: 0.35
-4. profile_point_class0: 1.08
-5. profile_point_class1: 0.36
-6. profile_point_class2: 0.18
+4. profile_point_dataclass0: 1.08
+5. profile_point_dataclass1: 0.36
+6. profile_point_dataclass2: 0.18
 
 Given the cleaner syntax of dataclasses, and equivalent performance, we
 recommend using dataclasses wherever possible. However, whether to mutate them
@@ -47,6 +47,12 @@ class Point:
 class DataPoint:
     x: int
     y: int
+
+
+def profile_tuple(initial: Tuple[int, int], values: List[Tuple[int, int]]):
+    tup = initial
+    for (x0, y0) in values:
+        tup = (x0, y0)  # noqa: F841
 
 
 def profile_point0(initial: Tuple[int, int], values: List[Tuple[int, int]]):
@@ -79,12 +85,6 @@ def profile_point_dataclass2(initial: Tuple[int, int], values: List[Tuple[int, i
     for (x0, y0) in values:
         point.x = x0
         point.y = y0
-
-
-def profile_tuple(initial: Tuple[int, int], values: List[Tuple[int, int]]):
-    tup = initial
-    for (x0, y0) in values:
-        tup = (x0, y0)  # noqa: F841
 
 
 if __name__ == "__main__":
