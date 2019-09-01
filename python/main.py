@@ -10,6 +10,8 @@ from input.input import Keys, Input
 
 def main():
 
+    black = (0, 0, 0)
+
     pygame.init()
     screen = pygame.display.set_mode((400, 300))
     done = False
@@ -29,7 +31,7 @@ def main():
                 done = True
         current_input = Input({ego_ball.id: Keys.from_pygame_pressed(pygame.key.get_pressed())})
 
-        screen.fill((0, 0, 0))
+        screen.fill(black)  # reset the screen before we redraw the state
         clock.tick(60)  # tagpro runs at 60hz
         delta_t_ms: int = clock.get_time()
         world_state.handle_input(current_input)

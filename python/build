@@ -24,15 +24,21 @@ passed = True
 if args.fix:
     print("Running autopep8...")
     os.system("autopep8 . --recursive --in-place")
-print("Running flake8...")
-passed = passed and exit_code_is_0(os.system("flake8"))
-print("Running mypy...")
-passed = passed and exit_code_is_0(os.system("mypy ."))
-print("Running unittest...")
-passed = passed and exit_code_is_0(os.system("python -m unittest"))
+flake8_passed = exit_code_is_0(os.system("flake8"))
+if not flake8_passed:
+    print("flake8 failed ❌")
+    print()
+mypy_passed = exit_code_is_0(os.system("mypy ."))
+if not flake8_passed:
+    print("mypy failed ❌")
+    print()
+unittest_passed = exit_code_is_0(os.system("python -m unittest"))
+if not unittest_passed:
+    print("unittest failed ❌")
+    print()
 
-if passed:
+all_checks = [flake8_passed, mypy_passed, unittest_passed]
+if all(all_checks):
     print("All checks passed ✔️")
 else:
-    print("One check failed ❌")
     sys.exit(1)
