@@ -4,11 +4,10 @@ from dataclasses import dataclass
 
 from visualization.drawable import Drawable
 from input.input import Input
-from .ball import Ball, Team
-from .flag import Flag
+from state.ball import Ball, Team
+from state.flag import Flag
 
 
-@dataclass
 class State(Drawable):
     def __init__(self, balls: List[Ball], flag: Flag):
         self.flag = flag
