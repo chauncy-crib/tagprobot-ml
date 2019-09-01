@@ -38,3 +38,6 @@ class State(Drawable):
         """
         for b in self.balls.values():
             b.update(dt)
+
+    def get_ego_ball(self):
+        return next(ball for ball in self.balls.values() if ball.team == Team.EGO)

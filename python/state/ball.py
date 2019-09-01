@@ -1,5 +1,5 @@
 import copy
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from enum import Enum
 import pygame
 from typing import Tuple
@@ -9,7 +9,6 @@ from utils.math import clamp
 from input.input import Keys
 from visualization.shape import Shape
 
-radius: int = 19  # pixels
 max_speed: float = 250  # pixels / second
 default_accel: int = 150  # pixels / second^2
 damping_coefficient: float = 0.5
@@ -43,7 +42,7 @@ class Ball(Shape):
 
     on_team_tile: bool = False
 
-    radius: int = radius
+    radius: int = 19  # pixels
 
     def get_shape(self):
         if self.team is Team.EGO:
@@ -56,10 +55,10 @@ class Ball(Shape):
             raise ValueError("You must be self, friend, or foe!")
         return (pygame.draw.ellipse,
                 color,
-                pygame.Rect(self.x - radius,
-                            self.y - radius,
-                            2*radius,
-                            2*radius))
+                pygame.Rect(self.x - self.radius,
+                            self.y - self.radius,
+                            2*self.radius,
+                            2*self.radius))
 
     def is_on_team_tile(self, map) -> bool:
         # TODO (altodyte): This should return True if the ball is on a team tile matching its color
@@ -69,9 +68,8 @@ class Ball(Shape):
         self.ax, self.ay = self.accels_from_input(keypresses)
 
     def simulate_input(self, keypresses: Keys) -> 'Ball':
-        future_ball = copy.deepcopy(self)
-        self.ax, self.ay = self.accels_from_input(keypresses)
-        return future_ball
+        ax, ay = self.accels_from_input(keypresses)
+        return replace(self, ax=ax, ay=ay)
 
     def accels_from_input(self, keypresses: Keys) -> Tuple[int, int]:
         ax = self._accel_from_input(keypresses.left_pressed, keypresses.right_pressed)
@@ -98,6 +96,8 @@ class Ball(Shape):
     def simulate_update(self, dt: int) -> Tuple[float, float, float, float]:
         """
         :param int dt: time elapsed in milliseconds
+        :return (float, float, float, float) state: Updated (x, y, vx, vy) based on physics over dt
+
         See https://www.reddit.com/r/TagPro/wiki/physics for details on physics rules.
         """
         max_vel = max_speed if not self.on_team_tile else max_speed * 2.0
