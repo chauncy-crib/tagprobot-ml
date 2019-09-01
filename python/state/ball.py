@@ -14,8 +14,9 @@ class Team(Enum):
 
 @dataclass
 class Ball(Shape):
-    x: int
-    y: int
+    # floats needed in order to store position at fractional pixels
+    x: float
+    y: float
     id: UUID
     team: Team
     # velocities in pixels/second
@@ -40,5 +41,5 @@ class Ball(Shape):
                             2*self.radius))
 
     def move(self, dt: int) -> None:
-        self.x += self.vx * dt // 1000
-        self.y += self.vy * dt // 1000
+        self.x += self.vx * dt / 1000
+        self.y += self.vy * dt / 1000
