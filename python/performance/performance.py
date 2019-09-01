@@ -17,7 +17,7 @@ The options are:
 4. Use a dataclass, and use `replace` to construct a new instance for each
 update
 5. Use a dataclass, and manually construct a new instance for each update
-5. Use a dataclass, and mutate the instance for each update
+6. Use a dataclass, and mutate the instance for each update
 
 
 The performance of each of these options (in seconds, so large numbers are
@@ -35,6 +35,7 @@ recommend using dataclasses wherever possible. However, whether to mutate them
 or construct new instances is up to you (if the tradeoff of using mutability is
 worth the ~2x performance gain).
 """
+
 
 class Point:
     def __init__(self, x: int, y: int):
@@ -54,20 +55,24 @@ def profile_point0(initial: Tuple[int, int], values: List[Tuple[int, int]]):
         point.x = x0
         point.y = y0
 
+
 def profile_point1(initial: Tuple[int, int], values: List[Tuple[int, int]]):
     point = Point(initial[0], initial[1])
     for (x0, y0) in values:
-        point = Point(x0, y0)
+        point = Point(x0, y0)  # noqa: F841
+
 
 def profile_point_dataclass0(initial: Tuple[int, int], values: List[Tuple[int, int]]):
     point = DataPoint(initial[0], initial[1])
     for (x0, y0) in values:
-        point = replace(point, x=x0, y=y0)
+        point = replace(point, x=x0, y=y0)  # noqa: F841
+
 
 def profile_point_dataclass1(initial: Tuple[int, int], values: List[Tuple[int, int]]):
     point = DataPoint(initial[0], initial[1])
     for (x0, y0) in values:
-        point = DataPoint(x0, y0)
+        point = DataPoint(x0, y0)  # noqa: F841
+
 
 def profile_point_dataclass2(initial: Tuple[int, int], values: List[Tuple[int, int]]):
     point = DataPoint(initial[0], initial[1])
@@ -75,10 +80,11 @@ def profile_point_dataclass2(initial: Tuple[int, int], values: List[Tuple[int, i
         point.x = x0
         point.y = y0
 
+
 def profile_tuple(initial: Tuple[int, int], values: List[Tuple[int, int]]):
     tup = initial
     for (x0, y0) in values:
-        tup = (x0, y0)
+        tup = (x0, y0)  # noqa: F841
 
 
 if __name__ == "__main__":
@@ -111,5 +117,3 @@ if __name__ == "__main__":
     profile_point_dataclass2(init, rest)
     delta = time() - t
     print("profile_point_class2: {}".format(delta))
-
-

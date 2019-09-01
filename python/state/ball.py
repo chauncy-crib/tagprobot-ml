@@ -1,7 +1,7 @@
 from enum import Enum
 import pygame
 from uuid import UUID
-from dataclasses import dataclass, replace
+from dataclasses import dataclass
 
 from visualization.shape import Shape
 
