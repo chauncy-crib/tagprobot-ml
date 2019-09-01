@@ -34,4 +34,4 @@ class State(Drawable):
         :param int dt: time elapsed in milliseconds
         """
         for b in self.balls.values():
-            b.move(dt)
+            b.update(dt)

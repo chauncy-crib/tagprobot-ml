@@ -5,6 +5,9 @@ from dataclasses import dataclass
 
 from visualization.shape import Shape
 
+radius: int = 19
+damping_coefficient: float = 0.5
+
 
 class Team(Enum):
     EGO = 0
@@ -20,9 +23,11 @@ class Ball(Shape):
     id: UUID
     team: Team
     # velocities in pixels/second
-    vx: int = 0
-    vy: int = 0
-    radius: int = 19
+    vx: float = 0
+    vy: float = 0
+    # acceleration in pixels/second^2
+    ax: int = 0
+    ay: int = 0
 
     def get_shape(self):
         if self.team is Team.EGO:
@@ -35,10 +40,21 @@ class Ball(Shape):
             raise ValueError("You must be self, friend, or foe!")
         return (pygame.draw.ellipse,
                 color,
-                pygame.Rect(self.x - self.radius,
-                            self.y - self.radius,
-                            2*self.radius,
-                            2*self.radius))
+                pygame.Rect(self.x - radius,
+                            self.y - radius,
+                            2*radius,
+                            2*radius))
+
+    def update(self, dt: int) -> None:
+        """
+        :param int dt: time elapsed in milliseconds
+        """
+        self.apply_drag(dt)
+        self.move(dt)
+
+    def apply_drag(self, dt: int) -> None:
+        self.vx -= self.vx * damping_coefficient * dt / 1000
+        self.vy -= self.vy * damping_coefficient * dt / 1000
 
     def move(self, dt: int) -> None:
         self.x += self.vx * dt / 1000
