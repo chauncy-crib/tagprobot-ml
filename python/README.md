@@ -61,7 +61,9 @@ class Node:
 
 ## Immutability + Purity
 
-- We bias towards immutability + purity. For example, we tend to use [frozen dataclasses](https://docs.python.org/3/library/dataclasses.html) to represent immutable collections of data.
+- We bias towards immutability + purity. However, there are performance drawbacks to this approach in Python, so exercise best judgement. A good rule of thumb is that a function should either return a value, or perform a side effect (it should not do both). For side effecting functions, a type annotation of `-> None` indicates the function's purpose is a an effect.
+- See [performance.py](https://github.com/chauncy-crib/tagprobot-ml/blob/master/python/performance/performance.py) for a performance analysis of different options for handling data.
+- We use [dataclasses](https://docs.python.org/3/library/dataclasses.html) heavily to avoid writing class boilerplate. Most classes should be dataclasses. For example:
 
 ```
 @dataclass(frozen=True)
@@ -69,5 +71,7 @@ class MyClass:
     x: int
     y: int
     s: str
-    pass
+
+my_class = MyClass(x=1, y=2, s="foo")
+x = my_class.x
 ```

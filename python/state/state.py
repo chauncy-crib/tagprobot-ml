@@ -8,7 +8,7 @@ from .ball import Ball
 from .flag import Flag
 
 
-@dataclass(frozen=True)
+@dataclass
 class State(Drawable):
     enemy_balls: List[Ball]
     friendly_balls: List[Ball]
@@ -35,13 +35,9 @@ class State(Drawable):
         # TODO: implement this correctly in a subsequent PR
         return self
 
-    def next_state(self, dt: int) -> 'State':
+    def next_state(self, dt: int) -> None:
         """
         :param int dt: time elapsed in milliseconds
         """
-        return State(
-            enemy_balls=[b.move(dt) for b in self.enemy_balls],
-            friendly_balls=[b.move(dt) for b in self.friendly_balls],
-            ego_ball=self.ego_ball.move(dt),
-            flag=self.flag
-        )
+        for b in self.all_balls():
+            b.move(dt)

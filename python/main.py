@@ -29,7 +29,7 @@ def main():
         screen.fill((0, 0, 0))
         clock.tick(10)
         delta_t_ms: int = clock.get_time()
-        world_state = world_state.next_state(delta_t_ms)
+        world_state.next_state(delta_t_ms)
         world_state.draw(screen)
         pygame.display.flip()
 

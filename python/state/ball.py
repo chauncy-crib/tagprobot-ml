@@ -12,7 +12,7 @@ class Team(Enum):
     FOE = 2
 
 
-@dataclass(frozen=True)
+@dataclass
 class Ball(Shape):
     x: int
     y: int
@@ -39,5 +39,6 @@ class Ball(Shape):
                             2*self.radius,
                             2*self.radius))
 
-    def move(self, dt: int) -> 'Ball':
-        return replace(self, x=self.x + (self.vx * dt // 1000), y=self.y + (self.vy * dt // 1000))
+    def move(self, dt: int) -> None:
+        self.x += self.vx * dt // 1000
+        self.y += self.vy * dt // 1000
