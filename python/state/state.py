@@ -1,6 +1,5 @@
 from typing import Dict, List
 from uuid import UUID
-from dataclasses import dataclass
 
 from visualization.drawable import Drawable
 from input.input import Input
@@ -8,11 +7,13 @@ from .ball import Ball, Team
 from .flag import Flag
 
 
-@dataclass
 class State(Drawable):
     def __init__(self, balls: List[Ball], flag: Flag):
         self.flag = flag
         self.balls: Dict[UUID, Ball] = {b.id: b for b in balls}
+        self.friendly_score = 0
+        self.enemy_score = 0
+
         num_foe_balls = sum(1 for b in balls if b.team is Team.FOE)
         num_friendly_balls = sum(1 for b in balls if b.team is Team.FRIEND)
         num_ego_balls = sum(1 for b in balls if b.team is Team.EGO)
