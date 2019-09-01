@@ -10,7 +10,7 @@ parser.add_argument('--fix', action='store_true')
 args = parser.parse_args()
 
 
-def exit_code_is_0(sys_return):
+def exit_code_is_0(sys_return) -> bool:
     """
     https://stackoverflow.com/questions/6466711/what-is-the-return-value-of-os-system-in-python
     The first 8 bits are the exit status. We will assume the process does not
