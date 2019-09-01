@@ -5,6 +5,7 @@ from dataclasses import dataclass
 
 from visualization.shape import Shape
 from input.input import Keys
+from utils.math import clamp
 
 radius: int = 19  # pixels
 max_speed: float = 250  # pixels / second
@@ -59,7 +60,6 @@ class Ball(Shape):
         return False
 
     def handle_input(self, keypresses: Keys) -> None:
-        # Handle x component of Ball state
         self.ax = self._accel_from_input(keypresses.left_pressed, keypresses.right_pressed)
         self.ay = self._accel_from_input(keypresses.up_pressed, keypresses.down_pressed)
 
@@ -85,8 +85,9 @@ class Ball(Shape):
         self.move(dt)
 
     def apply_accels(self, dt: int) -> None:
-        self.vx += (self.ax - self.vx * damping_coefficient) * dt * 0.001
-        self.vy += (self.ay - self.vy * damping_coefficient) * dt * 0.001
+        max_vel = max_speed if not self.is_on_team_tile(None) else max_speed * 2.0
+        self.vx += clamp((self.ax - self.vx * damping_coefficient) * dt * 0.001, -max_vel, max_vel)
+        self.vy += clamp((self.ay - self.vy * damping_coefficient) * dt * 0.001, -max_vel, max_vel)
 
     def move(self, dt: int) -> None:
         self.x += self.vx * dt * 0.001

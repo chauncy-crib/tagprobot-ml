@@ -27,9 +27,9 @@ class State(Drawable):
 
         self.flag.draw(screen)
 
-    def handle_inputs(self, input: Input) -> None:
-        # TODO: implement this correctly in a subsequent PR
-        pass
+    def handle_input(self, user_input: Input) -> None:
+        for uid, keys in user_input.commands.items():
+            self.balls[uid].handle_input(keys)
 
     def next_state(self, dt: int) -> None:
         """
