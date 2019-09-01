@@ -39,7 +39,7 @@ def main():
 
         pygame_pressed = pygame.key.get_pressed()
         if pygame_pressed[pygame.K_SPACE]:
-            # While space is pressed, we try to random walk to the flag. 
+            # While space is pressed, we try to random walk to the flag.
             # If randomly generated diagnonal keypresses are worse than doing nothing, do nothing.
             current_input = Input({ego_ball.id: Keys()})
             current_score = score.naive_ego_to_flag(world_state)
