@@ -1,0 +1,38 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import sys
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--fix', action='store_true')
+
+args = parser.parse_args()
+
+
+def exit_code_0(sys_return):
+    """
+    https://stackoverflow.com/questions/6466711/what-is-the-return-value-of-os-system-in-python
+    The first 8 bits are the exit status. We will assume the process does not
+    get killed, and so we don't need to worry about the signal number.
+    """
+    return (sys_return >> 8) == 0
+
+
+passed = True
+
+if args.fix:
+    print("Running autopep8...")
+    os.system("autopep8 . --recursive --in-place")
+print("Running flake8...")
+passed = passed and exit_code_0(os.system("flake8"))
+print("Running mypy...")
+passed = passed and exit_code_0(os.system("mypy ."))
+print("Running unittest...")
+passed = passed and exit_code_0(os.system("python -m unittest"))
+
+if passed:
+    print("All checks passed ✔️")
+else:
+    print("One check failed ❌")
+    sys.exit(1)
