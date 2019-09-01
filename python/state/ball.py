@@ -8,7 +8,7 @@ from input.input import Keys
 
 radius: int = 19  # pixels
 max_speed: float = 250  # pixels / second
-max_accel: int = 150  # pixels / second^2
+default_accel: int = 150  # pixels / second^2
 damping_coefficient: float = 0.5
 
 
@@ -64,9 +64,9 @@ class Ball(Shape):
         self.ay = self._accel_from_input(keypresses.up_pressed, keypresses.down_pressed)
 
     def _accel_from_input(self, negative_dir_pressed: bool, positive_dir_pressed: bool) -> int:
-        if positive_dir_pressed and negative_dir_pressed:
+        if positive_dir_pressed == negative_dir_pressed:
             return 0
-        accel: float = -max_accel if negative_dir_pressed else max_accel
+        accel: float = -default_accel if negative_dir_pressed else default_accel
         use_team_tiles = (not self.has_flag) and self.is_on_team_tile(None)
         if self.has_jj and not use_team_tiles:
             accel *= 1.25  # bonus for just having juke juice
@@ -79,13 +79,14 @@ class Ball(Shape):
     def update(self, dt: int) -> None:
         """
         :param int dt: time elapsed in milliseconds
+        See https://www.reddit.com/r/TagPro/wiki/physics for details on physics rules.
         """
         self.apply_accels(dt)
         self.move(dt)
 
     def apply_accels(self, dt: int) -> None:
-        self.vx -= (self.ax + self.vx * damping_coefficient) * dt * 0.001
-        self.vy -= (self.ay + self.vy * damping_coefficient) * dt * 0.001
+        self.vx += (self.ax - self.vx * damping_coefficient) * dt * 0.001
+        self.vy += (self.ay - self.vy * damping_coefficient) * dt * 0.001
 
     def move(self, dt: int) -> None:
         self.x += self.vx * dt * 0.001
