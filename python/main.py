@@ -17,7 +17,7 @@ def main():
     ego_ball = Ball(0, 0, uuid4(), Team.EGO, 50, 50)
     flag = Flag(100, 100)
 
-    world_state = State([foe_ball], [friend_ball], ego_ball, flag)
+    world_state = State([foe_ball] + [friend_ball] + [ego_ball], flag)
 
     clock = pygame.time.Clock()
 
@@ -27,7 +27,7 @@ def main():
                 done = True
 
         screen.fill((0, 0, 0))
-        clock.tick(60) # tagpro runs at 60hz
+        clock.tick(60)  # tagpro runs at 60hz
         delta_t_ms: int = clock.get_time()
         world_state.next_state(delta_t_ms)
         world_state.draw(screen)
