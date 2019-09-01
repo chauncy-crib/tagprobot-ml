@@ -10,7 +10,7 @@ parser.add_argument('--fix', action='store_true')
 args = parser.parse_args()
 
 
-def exit_code_0(sys_return):
+def exit_code_is_0(sys_return):
     """
     https://stackoverflow.com/questions/6466711/what-is-the-return-value-of-os-system-in-python
     The first 8 bits are the exit status. We will assume the process does not
@@ -25,11 +25,11 @@ if args.fix:
     print("Running autopep8...")
     os.system("autopep8 . --recursive --in-place")
 print("Running flake8...")
-passed = passed and exit_code_0(os.system("flake8"))
+passed = passed and exit_code_is_0(os.system("flake8"))
 print("Running mypy...")
-passed = passed and exit_code_0(os.system("mypy ."))
+passed = passed and exit_code_is_0(os.system("mypy ."))
 print("Running unittest...")
-passed = passed and exit_code_0(os.system("python -m unittest"))
+passed = passed and exit_code_is_0(os.system("python -m unittest"))
 
 if passed:
     print("All checks passed ✔️")
