@@ -1,5 +1,6 @@
-import pygame
 from dataclasses import dataclass
+import pygame
+
 from visualization.shape import Shape
 
 side_length = 30
@@ -10,6 +11,7 @@ color = (255, 255, 153)
 class Flag(Shape):
     x: int
     y: int
+    radius: int = 15  # pixels
 
     def get_shape(self):
         return (pygame.draw.rect, color,

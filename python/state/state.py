@@ -11,6 +11,9 @@ class State(Drawable):
     def __init__(self, balls: List[Ball], flag: Flag):
         self.flag = flag
         self.balls: Dict[UUID, Ball] = {b.id: b for b in balls}
+        self.friendly_score = 0
+        self.enemy_score = 0
+
         num_foe_balls = sum(1 for b in balls if b.team is Team.FOE)
         num_friendly_balls = sum(1 for b in balls if b.team is Team.FRIEND)
         num_ego_balls = sum(1 for b in balls if b.team is Team.EGO)
@@ -35,3 +38,6 @@ class State(Drawable):
         """
         for b in self.balls.values():
             b.update(dt)
+
+    def get_ego_ball(self):
+        return next(ball for ball in self.balls.values() if ball.team == Team.EGO)
