@@ -15,8 +15,10 @@ class State(Drawable):
         self.balls: Dict[UUID, Ball] = {b.id: b for b in balls}
         num_foe_balls = sum(1 for b in balls if b.team is Team.FOE)
         num_friendly_balls = sum(1 for b in balls if b.team is Team.FRIEND)
+        num_ego_balls = sum(1 for b in balls if b.team is Team.EGO)
         assert(num_foe_balls <= 4)
         assert(num_friendly_balls < 4)
+        assert(num_ego_balls == 1)
         assert(len(self.balls) == len(balls))
 
     def draw(self, screen) -> None:

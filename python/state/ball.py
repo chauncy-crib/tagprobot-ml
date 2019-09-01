@@ -4,8 +4,11 @@ from uuid import UUID
 from dataclasses import dataclass
 
 from visualization.shape import Shape
+from input.input import Keys
 
-radius: int = 19
+radius: int = 19  # pixels
+max_speed: float = 250  # pixels / second
+max_accel: int = 150  # pixels / second^2
 damping_coefficient: float = 0.5
 
 
@@ -22,12 +25,18 @@ class Ball(Shape):
     y: float
     id: UUID
     team: Team
-    # velocities in pixels/second
+    # velocities in pixels / second
     vx: float = 0
     vy: float = 0
-    # acceleration in pixels/second^2
+    # acceleration in pixels / second^2
     ax: int = 0
     ay: int = 0
+
+    has_flag: bool = False
+
+    has_jj: bool = False
+    has_rb: bool = False
+    has_tp: bool = False
 
     def get_shape(self):
         if self.team is Team.EGO:
@@ -45,17 +54,39 @@ class Ball(Shape):
                             2*radius,
                             2*radius))
 
+    def is_on_team_tile(self, map) -> bool:
+        # TODO (altodyte): This should return True if the ball is on a team tile matching its color.
+        return False
+
+    def handle_input(self, keypresses: Keys) -> None:
+        # Handle x component of Ball state
+        self.ax = self.accel_from_input(keypresses.left_pressed, keypresses.right_pressed)
+        self.ay = self.accel_from_input(keypresses.up_pressed, keypresses.down_pressed)
+
+    def _accel_from_input(self, negative_dir_pressed: bool, positive_dir_pressed: bool) -> float:
+        if positive_dir_pressed and negative_dir_pressed:
+            return 0.0
+        accel = -max_accel if negative_dir_pressed else max_accel
+        use_team_tiles = (not self.has_flag) and self.is_on_team_tile(None)
+        if self.has_jj and not use_team_tiles:
+            accel *= 1.25  # bonus for just having juke juice
+        elif self.has_jj:
+            accel *= 1.75  # bonus for having juke juice and team tile
+        elif use_team_tiles:
+            accel *= 1.50  # bonus for just having team tile
+        return accel
+
     def update(self, dt: int) -> None:
         """
         :param int dt: time elapsed in milliseconds
         """
-        self.apply_drag(dt)
+        self.apply_accels(dt)
         self.move(dt)
 
-    def apply_drag(self, dt: int) -> None:
-        self.vx -= self.vx * damping_coefficient * dt / 1000
-        self.vy -= self.vy * damping_coefficient * dt / 1000
+    def apply_accels(self, dt: int) -> None:
+        self.vx -= (self.ax + self.vx * damping_coefficient) * dt * 0.001
+        self.vy -= (self.ay + self.vy * damping_coefficient) * dt * 0.001
 
     def move(self, dt: int) -> None:
-        self.x += self.vx * dt / 1000
-        self.y += self.vy * dt / 1000
+        self.x += self.vx * dt * 0.001
+        self.y += self.vy * dt * 0.001
