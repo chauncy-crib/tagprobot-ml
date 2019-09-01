@@ -1,4 +1,3 @@
-import copy
 from dataclasses import dataclass, replace
 from enum import Enum
 import pygame
