@@ -5,6 +5,7 @@ from hypothesis.searchstrategy.strategies import SearchStrategy
 
 from state.ball import Ball, Team
 
+
 # strategy for generating a random position between -1M and 1M
 st_ball_position: SearchStrategy[int] = st.integers(min_value=-1e6, max_value=1e6)
 

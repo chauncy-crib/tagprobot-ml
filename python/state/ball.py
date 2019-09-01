@@ -1,6 +1,7 @@
 from enum import Enum
 import pygame
-import uuid
+from uuid import UUID
+from dataclasses import dataclass
 
 from visualization.shape import Shape
 
@@ -11,35 +12,34 @@ class Team(Enum):
     FOE = 2
 
 
+@dataclass
 class Ball(Shape):
-    def __init__(self, x: int, y: int, team: Team) -> None:
-        self.id = uuid.uuid4()
-
-        self.team = team
-        if self.team is Team.EGO:
-            self.color = (255, 200, 0)
-        elif self.team is Team.FRIEND:
-            self.color = (255, 0, 0)
-        elif self.team is Team.FOE:
-            self.color = (0, 0, 255)
-        else:
-            raise ValueError("You must be self, friend, or foe!")
-
-        # pixels
-        self.radius: int = 19
-
-        # pixels
-        self.x: int = x
-        self.y: int = y
-
-        # pixels/second
-        self.vx: int = 0
-        self.vy: int = 0
+    # floats needed in order to store position at fractional pixels
+    x: float
+    y: float
+    id: UUID
+    team: Team
+    # velocities in pixels/second
+    vx: int = 0
+    vy: int = 0
+    radius: int = 19
 
     def get_shape(self):
+        if self.team is Team.EGO:
+            color = (255, 200, 0)
+        elif self.team is Team.FRIEND:
+            color = (255, 0, 0)
+        elif self.team is Team.FOE:
+            color = (0, 0, 255)
+        else:
+            raise ValueError("You must be self, friend, or foe!")
         return (pygame.draw.ellipse,
-                self.color,
+                color,
                 pygame.Rect(self.x - self.radius,
                             self.y - self.radius,
                             2*self.radius,
                             2*self.radius))
+
+    def move(self, dt: int) -> None:
+        self.x += self.vx * dt / 1000
+        self.y += self.vy * dt / 1000
