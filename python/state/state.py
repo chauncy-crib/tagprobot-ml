@@ -1,6 +1,5 @@
 from typing import Dict, List
 from uuid import UUID
-from dataclasses import dataclass
 
 from visualization.drawable import Drawable
 from input.input import Input
