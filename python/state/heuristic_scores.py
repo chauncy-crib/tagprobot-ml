@@ -5,6 +5,8 @@ from utils import math
 from state.state import State
 
 
+# TODO: Decide if all of these should move into State
+
 def naive_ego_to_flag(state: State) -> float:
     ego_ball = state.get_ego_ball()
 

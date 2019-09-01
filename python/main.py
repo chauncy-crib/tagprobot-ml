@@ -46,6 +46,7 @@ def main():
             possible_keys = Keys.random_keys()
             future_ball = ego_ball.simulate_input(possible_keys)
             future_ball.update(delta_t_ms)
+            # TODO: we should have a function on State like def updateBall(ball_id, ball) -> State
             possible_world = copy.deepcopy(world_state)
             possible_world.balls[ego_ball.id] = future_ball
             possible_score = score.naive_ego_to_flag(possible_world)
