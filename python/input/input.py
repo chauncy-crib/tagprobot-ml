@@ -4,7 +4,6 @@ import random
 from uuid import UUID
 from typing import Dict
 
-
 @dataclass(frozen=True)
 class Keys:
     left_pressed: bool = False
@@ -27,3 +26,16 @@ class Keys:
 @dataclass(frozen=True)
 class Input:
     commands: Dict[UUID, Keys]
+
+
+input_choices = [
+    Keys(),
+    Keys(up_pressed=True),
+    Keys(up_pressed=True, right_pressed=True),
+    Keys(right_pressed=True),
+    Keys(down_pressed=True, right_pressed=True),
+    Keys(down_pressed=True),
+    Keys(down_pressed=True, left_pressed=True),
+    Keys(left_pressed=True),
+    Keys(up_pressed=True, left_pressed=True),
+]
