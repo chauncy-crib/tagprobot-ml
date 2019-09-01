@@ -43,11 +43,11 @@ def main():
             current_score = score.naive_ego_to_flag(world_state)
             possible_keys = Keys.random_keys()
             future_ball = ego_ball.simulate_input(possible_keys)
-            future_ball.update(delta_t_ms)  # todo this seems wrong
+            future_ball.update(delta_t_ms)
             possible_world = copy.deepcopy(world_state)
             possible_world.balls[ego_ball.id] = future_ball
             possible_score = score.naive_ego_to_flag(possible_world)
-            if possible_score > current_score:
+            if possible_score < current_score:
                 current_input = Input({ego_ball.id: possible_keys})
         else:
             current_input = Input({ego_ball.id: Keys.from_pygame_pressed(pygame_pressed)})
