@@ -10,12 +10,8 @@ from .flag import Flag
 
 @dataclass
 class State(Drawable):
-    enemy_balls: List[Ball]
-    friendly_balls: List[Ball]
-    ego_ball: Ball
-    flag: Flag
-
-    def __post_init__(self):
+    def __init__(self, balls: List[Ball], flag: Flag):
+        self.flag = flag
         assert(len(self.enemy_balls) <= 4)
         assert(len(self.friendly_balls) < 4)
         all_balls = self.all_balls()
