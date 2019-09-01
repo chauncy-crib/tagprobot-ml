@@ -55,18 +55,18 @@ class Ball(Shape):
                             2*radius))
 
     def is_on_team_tile(self, map) -> bool:
-        # TODO (altodyte): This should return True if the ball is on a team tile matching its color.
+        # TODO (altodyte): This should return True if the ball is on a team tile matching its color
         return False
 
     def handle_input(self, keypresses: Keys) -> None:
         # Handle x component of Ball state
-        self.ax = self.accel_from_input(keypresses.left_pressed, keypresses.right_pressed)
-        self.ay = self.accel_from_input(keypresses.up_pressed, keypresses.down_pressed)
+        self.ax = self._accel_from_input(keypresses.left_pressed, keypresses.right_pressed)
+        self.ay = self._accel_from_input(keypresses.up_pressed, keypresses.down_pressed)
 
-    def _accel_from_input(self, negative_dir_pressed: bool, positive_dir_pressed: bool) -> float:
+    def _accel_from_input(self, negative_dir_pressed: bool, positive_dir_pressed: bool) -> int:
         if positive_dir_pressed and negative_dir_pressed:
-            return 0.0
-        accel = -max_accel if negative_dir_pressed else max_accel
+            return 0
+        accel: float = -max_accel if negative_dir_pressed else max_accel
         use_team_tiles = (not self.has_flag) and self.is_on_team_tile(None)
         if self.has_jj and not use_team_tiles:
             accel *= 1.25  # bonus for just having juke juice
@@ -74,7 +74,7 @@ class Ball(Shape):
             accel *= 1.75  # bonus for having juke juice and team tile
         elif use_team_tiles:
             accel *= 1.50  # bonus for just having team tile
-        return accel
+        return int(accel)
 
     def update(self, dt: int) -> None:
         """
