@@ -12,13 +12,15 @@ from input.input import Keys, Input
 
 import state.heuristic_scores as score
 
+from train import reward
+
 
 def main():
 
     black = (0, 0, 0)
 
     pygame.init()
-    screen = pygame.display.set_mode((400, 300))
+    screen = pygame.display.set_mode((1000, 1000))
     done = False
 
     foe_ball = Ball(200, 200, uuid4(), Team.FOE, 50, 50)
@@ -60,6 +62,7 @@ def main():
         world_state.handle_input(current_input)
         world_state.next_state(delta_t_ms)
         world_state.draw(screen)
+        print("Current reward: {}".format(reward(world_state)))
         pygame.display.flip()
 
 

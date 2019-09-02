@@ -15,6 +15,13 @@ def naive_ego_to_flag(state: State) -> float:
     flag_ego_sq_dist = math.sq_dist(ego_ball.x, ego_ball.y, state.flag.x, state.flag.y)
     return max(0, flag_ego_sq_dist - combined_radius_sq)
 
+def linear_ego_to_flag(state: State) -> float:
+    ego_ball = state.get_ego_ball()
+
+    combined_radius = ego_ball.radius + state.flag.radius
+    flag_ego_dist = math.dist(ego_ball.x, ego_ball.y, state.flag.x, state.flag.y)
+    return max(0, flag_ego_dist - combined_radius)
+
 
 def naive_ego_to_ball(state: State, target_ball_id: UUID) -> float:
     ego_ball = state.get_ego_ball()

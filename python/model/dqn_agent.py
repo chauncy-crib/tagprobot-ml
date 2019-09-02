@@ -15,10 +15,12 @@ def model_input(state: State) -> np.ndarray:
     ego = state.get_ego_ball()
     flag = state.flag
     return np.array([[
-        ego.x - flag.x,
-        ego.y - flag.y,
-        ego.vx,
-        ego.vy
+        # TODO: this is to make inputs roughly [0, 1]. Unclear if this is
+        # needed
+        (ego.x - flag.x) / 1000,
+        (ego.y - flag.y) / 1000
+        # ego.vx,
+        # ego.vy
     ]])  # want this to be shaped (1, 4) so we have two layers of lists
 
 
@@ -28,19 +30,21 @@ class DQNAgent:
         self.state_size = state_size
         self.action_size = action_size
         self.memory = deque(maxlen=2000)
-        self.gamma = 0.01    # discount rate
+        self.gamma = 0.95    # discount rate
         self.epsilon = 1.0  # exploration rate
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.9995
-        self.learning_rate = 0.001
+        self.epsilon_decay = 0.98
+        self.learning_rate = 1
         self.model = self._build_model()
 
     def _build_model(self):
         # Neural Net for Deep-Q learning Model
         model = Sequential()
-        model.add(Dense(24, input_dim=self.state_size, activation='relu'))
-        model.add(Dense(24, activation='relu'))
-        model.add(Dense(self.action_size, activation='linear'))
+        model.add(Dense(self.action_size, input_dim=self.state_size,
+                        kernel_initializer='zeros',
+                        activation='linear'))
+        # model.add(Dense(24, activation='linear'))
+        # model.add(Dense(self.action_size, activation='linear'))
         model.compile(loss='mse',
                       optimizer=Adam(lr=self.learning_rate))
         return model
@@ -64,8 +68,6 @@ class DQNAgent:
                 # print(pred)
                 target = reward + self.gamma * pred
             target_f = self.model.predict(model_input(state))
-            # print("target: {}".format(target))
-            # print("target_f: {}".format(target_f))
             target_f[0][action] = target
             self.model.fit(model_input(state), target_f, epochs=1, verbose=0)
         if self.epsilon > self.epsilon_min:
