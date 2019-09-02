@@ -9,9 +9,11 @@ color = (255, 255, 153)
 
 @dataclass
 class Flag(Shape):
-    x: int
-    y: int
+    x: float
+    y: float
     radius: int = 15  # pixels
+
+    being_carried: bool = False
 
     def get_shape(self):
         return (pygame.draw.rect, color,
