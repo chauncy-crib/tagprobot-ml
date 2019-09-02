@@ -41,15 +41,19 @@ class Ball(Shape):
 
     on_team_tile: bool = False
 
+    is_popped: bool = False
+
     radius: int = 19  # pixels
 
     def get_shape(self):
+        # TODO we should handle color in a more reasonable way
+        pop_mult = 0.3 if self.is_popped else 1.0
         if self.team is Team.EGO:
-            color = (255, 200, 0)
+            color = (int(255*pop_mult), int(200*pop_mult), int(0*pop_mult))
         elif self.team is Team.FRIEND:
-            color = (255, 0, 0)
+            color = (int(255*pop_mult), int(0*pop_mult), int(0*pop_mult))
         elif self.team is Team.FOE:
-            color = (0, 0, 255)
+            color = (int(0*pop_mult), int(0*pop_mult), int(255*pop_mult))
         else:
             raise ValueError("You must be self, friend, or foe!")
         return (pygame.draw.ellipse,
@@ -90,15 +94,18 @@ class Ball(Shape):
 
     def update(self, dt: int) -> None:
         self.on_team_tile = self.is_on_team_tile(None)
-        self.x, self.y, self.vx, self.vy = self.simulate_update(dt)
+        self.x, self.y, self.vx, self.vy = self._difference_eq_update(dt)
 
-    def simulate_update(self, dt: int) -> Tuple[float, float, float, float]:
+    def _difference_eq_update(self, dt: int) -> Tuple[float, float, float, float]:
         """
         :param int dt: time elapsed in milliseconds
         :return (float, float, float, float) state: Updated (x, y, vx, vy) based on physics over dt
 
         See https://www.reddit.com/r/TagPro/wiki/physics for details on physics rules.
         """
+        if self.is_popped:
+            return (self.x, self.y, 0, 0)
+
         max_vel = max_speed if not self.on_team_tile else max_speed * 2.0
         vx = self.vx + clamp((self.ax - self.vx * damping_coefficient)
                              * dt * 0.001, -max_vel, max_vel)
@@ -109,3 +116,15 @@ class Ball(Shape):
         y = self.y + vy * dt * 0.001
 
         return (x, y, vx, vy)
+
+    def handle_pop(self) -> None:
+        self.has_flag = False
+        self.is_popped = True
+        # TODO use spawn regions
+        self.x = 300
+        self.y = 50
+
+    def on_same_team(self, other_ball: 'Ball') -> bool:
+        if self.team == Team.EGO or self.team == Team.FRIEND:
+            return other_ball.team == Team.EGO or other_ball.team == Team.FRIEND
+        return self.team == other_ball.team

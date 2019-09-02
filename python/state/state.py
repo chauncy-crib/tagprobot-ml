@@ -1,8 +1,11 @@
+import random
 from typing import Dict, List
 from uuid import UUID
 
 from visualization.drawable import Drawable
 from input.input import Input
+from utils import math
+
 from state.ball import Ball, Team
 from state.flag import Flag
 
@@ -38,6 +41,51 @@ class State(Drawable):
         """
         for b in self.balls.values():
             b.update(dt)
+            if b.has_flag:
+                self.flag.x, self.flag.y = b.x, b.y
+
+        # TODO check if any balls have popped on the environment (e.g. spikes).
+
+        # Check if any balls have tagged another ball. Do in random order for fairness.
+        for ball in random.sample(list(self.balls.values()), len(self.balls)):
+            if self.ball_gets_tagged(ball):
+                if ball.has_flag:
+                    self.flag.being_carried = False
+                ball.handle_pop()
+
+        # TODO decide if the flag should be automatically passed to a tagger.
+        # If the flag isn't being carried, see if any balls can grab it. Random order for fairness.
+        if not self.flag.being_carried:
+            for ball in random.sample(list(self.balls.values()), len(self.balls)):
+                if self.ball_gets_flag(ball):
+                    self.flag.being_carried = True
+                    ball.has_flag = True
+                    break
+
+        num_flag_carriers = sum(1 for b in self.balls.values() if b.has_flag)
+        assert(num_flag_carriers <= 1)
 
     def get_ego_ball(self):
         return next(ball for ball in self.balls.values() if ball.team == Team.EGO)
+
+    def ball_gets_flag(self, ball: Ball) -> bool:
+        if self.flag.being_carried:
+            return False
+        combined_radius = ball.radius + self.flag.radius
+        ball_flag_dist = math.dist(ball.x, ball.y, self.flag.x, self.flag.y)
+
+        return ball_flag_dist <= combined_radius
+
+    def ball_gets_tagged(self, ball: Ball) -> bool:
+        for other_ball in self.balls.values():
+            if other_ball.id == ball.id:
+                continue
+            if other_ball.is_popped or ball.is_popped:
+                continue
+            combined_radius = ball.radius + other_ball.radius
+            ball_ball_dist = math.dist(ball.x, ball.y, other_ball.x, other_ball.y)
+
+            if other_ball.has_tp or (ball.has_flag and not ball.on_same_team(other_ball)):
+                if ball_ball_dist <= combined_radius:
+                    return True
+        return False

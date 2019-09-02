@@ -1,16 +1,15 @@
 import utils.silent_pygame  # noqa: F401
 import pygame
 
-import copy
 from uuid import uuid4
 
 from state.state import State
 from state.flag import Flag
 from state.ball import Ball, Team
 
-from input.input import Keys, Input
+from strategies import myopic
 
-import state.heuristic_scores as score
+from input.input import Keys, Input
 
 
 def main():
@@ -18,12 +17,12 @@ def main():
     black = (0, 0, 0)
 
     pygame.init()
-    screen = pygame.display.set_mode((400, 300))
+    screen = pygame.display.set_mode((1000, 1000))
     done = False
 
     foe_ball = Ball(200, 200, uuid4(), Team.FOE, 50, 50)
     friend_ball = Ball(100, 200, uuid4(), Team.FRIEND, 50, -50)
-    ego_ball = Ball(100, 150, uuid4(), Team.EGO, 50, 50)
+    ego_ball = Ball(500, 500, uuid4(), Team.EGO, 50, 50)
     flag = Flag(100, 100)
 
     world_state = State([foe_ball] + [friend_ball] + [ego_ball], flag)
@@ -40,20 +39,14 @@ def main():
         delta_t_ms: int = clock.get_time()
 
         pygame_pressed = pygame.key.get_pressed()
-        if pygame_pressed[pygame.K_SPACE]:
-            # While space is pressed, we try to random walk to the flag.
-            # If randomly generated diagnonal keypresses are worse than doing nothing, do nothing.
-            current_input = Input({ego_ball.id: Keys()})
-            current_score = score.naive_ego_to_flag(world_state)
-            possible_keys = Keys.random_keys()
-            future_ball = ego_ball.simulate_input(possible_keys)
-            future_ball.update(delta_t_ms)
-            # TODO: we should have a function on State like def updateBall(ball_id, ball) -> State
-            possible_world = copy.deepcopy(world_state)
-            possible_world.balls[ego_ball.id] = future_ball
-            possible_score = score.naive_ego_to_flag(possible_world)
-            if possible_score < current_score:
-                current_input = Input({ego_ball.id: possible_keys})
+        if pygame_pressed[pygame.K_k]:
+            ego_ball.handle_pop()
+        elif pygame_pressed[pygame.K_r]:
+            ego_ball.is_popped = False
+        elif pygame_pressed[pygame.K_SPACE]:
+            # Of all sensible keypress combinations, choose the one with the lowest score in dt.
+            best_keypresses = myopic.best_keypresses(world_state, delta_t_ms)
+            current_input = Input({ego_ball.id: best_keypresses})
         else:
             current_input = Input({ego_ball.id: Keys.from_pygame_pressed(pygame_pressed)})
 
