@@ -7,7 +7,7 @@ import state.heuristic_scores as score
 
 def best_keypresses(state: State, dt: int) -> Keys:
     keypress_options = [
-        Keys()  # it's important that no action be first in case of uniform cost
+        Keys(),  # it's important that no action be first in case of uniform cost
         Keys(left_pressed=True),
         Keys(right_pressed=True),
         Keys(up_pressed=True),
