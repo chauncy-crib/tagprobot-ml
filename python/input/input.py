@@ -4,6 +4,7 @@ import random
 from uuid import UUID
 from typing import Dict
 
+
 @dataclass(frozen=True)
 class Keys:
     left_pressed: bool = False
