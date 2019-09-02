@@ -62,6 +62,9 @@ class State(Drawable):
                     ball.has_flag = True
                     break
 
+        num_flag_carriers = sum(1 for b in self.balls.values() if b.has_flag)
+        assert(num_flag_carriers <= 1)
+
     def get_ego_ball(self):
         return next(ball for ball in self.balls.values() if ball.team == Team.EGO)
 

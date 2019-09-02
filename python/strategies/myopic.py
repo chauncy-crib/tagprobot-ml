@@ -5,13 +5,13 @@ from state.state import State
 import state.heuristic_scores as score
 
 
-def get_best_single_key(state: State, dt: int) -> Keys:
+def best_keypresses(state: State, dt: int) -> Keys:
     keypress_options = {
+        Keys(): 0.0,  # it's important that no action be first in case of uniform cost
         Keys(left_pressed=True): 0.0,
         Keys(right_pressed=True): 0.0,
         Keys(up_pressed=True): 0.0,
         Keys(down_pressed=True): 0.0,
-        Keys(): 0.0,
         Keys(left_pressed=True, up_pressed=True): 0.0,
         Keys(right_pressed=True, up_pressed=True): 0.0,
         Keys(left_pressed=True, down_pressed=True): 0.0,

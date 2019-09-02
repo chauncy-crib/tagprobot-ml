@@ -45,7 +45,7 @@ def main():
             ego_ball.is_popped = False
         elif pygame_pressed[pygame.K_SPACE]:
             # Of all sensible keypress combinations, choose the one with the lowest score in dt.
-            best_keypresses = myopic.get_best_single_key(world_state, delta_t_ms)
+            best_keypresses = myopic.best_keypresses(world_state, delta_t_ms)
             current_input = Input({ego_ball.id: best_keypresses})
         else:
             current_input = Input({ego_ball.id: Keys.from_pygame_pressed(pygame_pressed)})
