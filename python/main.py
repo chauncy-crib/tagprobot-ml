@@ -50,8 +50,8 @@ def main():
         else:
             current_input = Input({ego_ball.id: Keys.from_pygame_pressed(pygame_pressed)})
 
-        world_state.handle_input(current_input)
-        world_state.next_state(delta_t_ms)
+        world_state = world_state.handle_input(current_input)
+        world_state = world_state.next_state(delta_t_ms)
         world_state.draw(screen)
         pygame.display.flip()
 

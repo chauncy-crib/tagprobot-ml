@@ -67,10 +67,7 @@ class Ball(Shape):
         # TODO (altodyte): This should return True if the ball is on a team tile matching its color
         return False
 
-    def handle_input(self, keypresses: Keys) -> None:
-        self.ax, self.ay = self.accels_from_input(keypresses)
-
-    def simulate_input(self, keypresses: Keys) -> 'Ball':
+    def handle_input(self, keypresses: Keys) -> 'Ball':
         ax, ay = self.accels_from_input(keypresses)
         return replace(self, ax=ax, ay=ay)
 
@@ -92,9 +89,10 @@ class Ball(Shape):
             accel *= 1.50  # bonus for just having team tile
         return int(accel)
 
-    def update(self, dt: int) -> None:
-        self.on_team_tile = self.is_on_team_tile(None)
-        self.x, self.y, self.vx, self.vy = self._difference_eq_update(dt)
+    def update(self, dt: int) -> 'Ball':
+        on_team_tile = self.is_on_team_tile(None)
+        x, y, vx, vy = self._difference_eq_update(dt)
+        return replace(self, on_team_tile=on_team_tile, x=x, y=y, vx=vx, vy=vy)
 
     def _difference_eq_update(self, dt: int) -> Tuple[float, float, float, float]:
         """
@@ -117,12 +115,9 @@ class Ball(Shape):
 
         return (x, y, vx, vy)
 
-    def handle_pop(self) -> None:
-        self.has_flag = False
-        self.is_popped = True
+    def handle_pop(self) -> 'Ball':
         # TODO use spawn regions
-        self.x = 300
-        self.y = 50
+        return replace(self, has_flag=False, is_popped=True, x=300, y=50)
 
     def on_same_team(self, other_ball: 'Ball') -> bool:
         if self.team == Team.EGO or self.team == Team.FRIEND:
