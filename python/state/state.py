@@ -87,7 +87,8 @@ class State(Drawable):
     def get_ego_ball(self):
         return next(ball for ball in self.balls.values() if ball.team == Team.EGO)
 
-    def ball_gets_flag(self, ball: Ball, flag: Flag) -> bool:
+    @staticmethod
+    def ball_gets_flag(ball: Ball, flag: Flag) -> bool:
         if flag.being_carried:
             return False
         combined_radius = ball.radius + flag.radius
@@ -95,7 +96,8 @@ class State(Drawable):
 
         return ball_flag_dist <= combined_radius
 
-    def ball_gets_tagged(self, ball: Ball, balls: [Ball]) -> bool:
+    @staticmethod
+    def ball_gets_tagged(ball: Ball, balls: [Ball]) -> bool:
         for other_ball in balls:
             if other_ball.id == ball.id:
                 continue
