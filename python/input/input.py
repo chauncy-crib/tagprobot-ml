@@ -30,13 +30,13 @@ class Input:
 
 
 input_choices = [
+    Keys(up_pressed=True, left_pressed=True),
+    Keys(down_pressed=True, left_pressed=True),
     Keys(),
     Keys(up_pressed=True),
     Keys(up_pressed=True, right_pressed=True),
     Keys(right_pressed=True),
     Keys(down_pressed=True, right_pressed=True),
     Keys(down_pressed=True),
-    Keys(down_pressed=True, left_pressed=True),
     Keys(left_pressed=True),
-    Keys(up_pressed=True, left_pressed=True),
 ]

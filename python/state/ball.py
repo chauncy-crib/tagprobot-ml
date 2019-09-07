@@ -43,6 +43,10 @@ class Ball(Shape):
 
     radius: int = 19  # pixels
 
+    def __str__(self):
+        return "Ball(x={}, y={}, vx={}, vy={})".format(self.x, self.y, self.vx,
+                                                       self.vy)
+
     def get_shape(self):
         if self.team is Team.EGO:
             color = (255, 200, 0)

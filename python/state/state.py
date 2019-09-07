@@ -13,6 +13,7 @@ class State(Drawable):
         self.balls: Dict[UUID, Ball] = {b.id: b for b in balls}
         self.friendly_score = 0
         self.enemy_score = 0
+        self.time = 0.0
 
         num_foe_balls = sum(1 for b in balls if b.team is Team.FOE)
         num_friendly_balls = sum(1 for b in balls if b.team is Team.FRIEND)
@@ -29,6 +30,8 @@ class State(Drawable):
         self.flag.draw(screen)
 
     def handle_input(self, user_input: Input) -> None:
+        print(user_input)
+        print(self.balls)
         for uid, keys in user_input.commands.items():
             self.balls[uid].handle_input(keys)
 
@@ -38,6 +41,11 @@ class State(Drawable):
         """
         for b in self.balls.values():
             b.update(dt)
+        self.time += (dt / 1000)
 
     def get_ego_ball(self):
         return next(ball for ball in self.balls.values() if ball.team == Team.EGO)
+
+    def __str__(self):
+        return "Balls:\n" + "\n".join([str(b) for b in self.balls.values()]) +\
+            "\n\nFlag:\n" + str(self.flag)

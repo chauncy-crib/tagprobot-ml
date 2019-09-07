@@ -1,6 +1,8 @@
 import utils.silent_pygame  # noqa: F401
 import pygame
 
+from copy import deepcopy
+
 import copy
 from uuid import uuid4
 
@@ -12,7 +14,7 @@ from input.input import Keys, Input
 
 import state.heuristic_scores as score
 
-from train import reward
+from train import reward, rewardTransition
 
 
 def main():
@@ -59,10 +61,13 @@ def main():
         else:
             current_input = Input({ego_ball.id: Keys.from_pygame_pressed(pygame_pressed)})
 
+        prev_state = deepcopy(world_state)
         world_state.handle_input(current_input)
         world_state.next_state(delta_t_ms)
         world_state.draw(screen)
-        print("Current reward: {}".format(reward(world_state)))
+        reward_val = rewardTransition(prev_state, prev_state.time, world_state,
+                                      world_state.time)
+        print("Reward Transition: {}".format(reward_val))
         pygame.display.flip()
 
 
