@@ -1,6 +1,4 @@
-import random
-from typing import Dict, List
-from uuid import UUID
+from typing import List
 from dataclasses import replace
 
 from visualization.drawable import Drawable
@@ -97,7 +95,7 @@ class State(Drawable):
         return ball_flag_dist <= combined_radius
 
     @staticmethod
-    def ball_gets_tagged(ball: Ball, balls: [Ball]) -> bool:
+    def ball_gets_tagged(ball: Ball, balls: List[Ball]) -> bool:
         for other_ball in balls:
             if other_ball.id == ball.id:
                 continue

@@ -17,7 +17,7 @@ def naive_ego_to_flag(state: State) -> float:
 
 def naive_ego_to_ball(state: State, target_ball_id: UUID) -> float:
     ego_ball = state.get_ego_ball()
-    target_ball = state.balls[target_ball_id]
+    target_ball = next(b for b in state.balls if b.id == target_ball_id)
 
     combined_radius = ego_ball.radius + target_ball.radius
     target_ego_dist = math.dist(ego_ball.x, ego_ball.y, target_ball.x, target_ball.y)

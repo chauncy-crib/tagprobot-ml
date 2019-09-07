@@ -1,15 +1,14 @@
+import random
+from utils.timeit import timeit
+from copy import deepcopy
+from typing import List, Tuple
+from dataclasses import dataclass, replace
 import sys
 from os import pardir
-from os.path import dirname, abspath, join
+from os.path import dirname, join
 # we need to add the parent directory to the sys.path in order to import from
 # other modules
 sys.path.append(join(dirname(__file__), pardir))
-from dataclasses import dataclass, replace
-from typing import List, Tuple
-from time import time
-from copy import deepcopy
-from utils.timeit import timeit
-import random
 
 
 """
@@ -96,6 +95,7 @@ def profile_point_dataclass2(initial: Tuple[int, int], values: List[Tuple[int, i
     for (x0, y0) in values:
         point.x = x0
         point.y = y0
+
 
 def profile_point_deepcopy(initial: Tuple[int, int], values: List[Tuple[int, int]]):
     point = DataPoint(initial[0], initial[1])
