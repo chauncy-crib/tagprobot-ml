@@ -7,7 +7,7 @@ side_length = 30
 color = (255, 255, 153)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Flag(Shape):
     x: float
     y: float

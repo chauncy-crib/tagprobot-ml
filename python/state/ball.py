@@ -19,7 +19,7 @@ class Team(Enum):
     FOE = 2
 
 
-@dataclass
+@dataclass(frozen=True)
 class Ball(Shape):
     # floats needed in order to store position at fractional pixels
     x: float
