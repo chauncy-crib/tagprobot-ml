@@ -5,7 +5,7 @@ from uuid import UUID
 from typing import Dict
 
 
-@dataclass
+@dataclass(frozen=True)
 class Keys:
     left_pressed: bool = False
     right_pressed: bool = False
@@ -24,6 +24,6 @@ class Keys:
         return Keys(press_left, not press_left, press_up, not press_up)
 
 
-@dataclass
+@dataclass(frozen=True)
 class Input:
     commands: Dict[UUID, Keys]

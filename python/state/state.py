@@ -1,30 +1,31 @@
-from typing import List
-from dataclasses import replace
+from typing import List, Dict
+from dataclasses import dataclass, replace
+from uuid import UUID
 
 from visualization.drawable import Drawable
-from input.input import Input
+from input.input import Input, Keys
 from utils import math
 
 from state.ball import Ball, Team
 from state.flag import Flag
 
 
+@dataclass(frozen=True)
 class State(Drawable):
-    def __init__(self, balls: List[Ball], flag: Flag):
-        self.flag = flag
-        self.balls = balls
-        self.friendly_score = 0
-        self.enemy_score = 0
+    balls: List[Ball]
+    flag: Flag
+    friendly_score = 0
+    enemy_score = 0
 
-        ball_ids = {b.id for b in balls}
-        num_foe_balls = sum(1 for b in balls if b.team is Team.FOE)
-        num_friendly_balls = sum(1 for b in balls if b.team is Team.FRIEND)
-        num_ego_balls = sum(1 for b in balls if b.team is Team.EGO)
-        assert(len(ball_ids) == len(balls))
+    def __post_init__(self):
+        ball_ids = {b.id for b in self.balls}
+        num_foe_balls = sum(1 for b in self.balls if b.team is Team.FOE)
+        num_friendly_balls = sum(1 for b in self.balls if b.team is Team.FRIEND)
+        num_ego_balls = sum(1 for b in self.balls if b.team is Team.EGO)
+        assert(len(ball_ids) == len(self.balls))
         assert(num_foe_balls <= 4)
         assert(num_friendly_balls < 4)
         assert(num_ego_balls == 1)
-        assert(len(self.balls) == len(balls))
 
     def draw(self, screen) -> None:
         for ball in self.balls:
@@ -32,9 +33,11 @@ class State(Drawable):
         self.flag.draw(screen)
 
     def handle_input(self, user_input: Input) -> 'State':
-        commands = user_input.commands
-        balls = [ball.handle_input(commands[ball.id]) if ball.id in commands
-                 else ball for ball in self.balls]
+        def handle_ball_input(ball: Ball, commands: Dict[UUID, Keys]):
+            if ball.id not in commands:
+                return ball
+            return ball.handle_input(commands[ball.id])
+        balls = [handle_ball_input(b, user_input.commands) for b in self.balls]
         return State(
             balls=balls,
             flag=self.flag
