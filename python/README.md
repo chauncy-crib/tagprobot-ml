@@ -23,7 +23,7 @@ Make sure you are in `tagprobot-ml/python/`, and have `ENV` activated.
 
 ## Run the code
 
-`python main.py`
+`./main.py`
 
 ## Linting + Testing
 
