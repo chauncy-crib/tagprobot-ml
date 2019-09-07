@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import utils.silent_pygame  # noqa: F401
 import pygame
 
