@@ -1,6 +1,5 @@
 SHELL = /bin/bash
 .PHONY: env install freeze run build
-.SILENT: env install freeze run build
 
 activate = source ENV/bin/activate
 
