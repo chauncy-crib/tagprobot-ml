@@ -1,14 +1,14 @@
-import random
-from utils.timeit import timeit
-from copy import deepcopy
-from typing import List, Tuple
-from dataclasses import dataclass, replace
 import sys
 from os import pardir
 from os.path import dirname, join
 # we need to add the parent directory to the sys.path in order to import from
 # other modules
 sys.path.append(join(dirname(__file__), pardir))
+import random
+from utils.timeit import timeit
+from copy import deepcopy
+from typing import List, Tuple
+from dataclasses import dataclass, replace
 
 
 """
