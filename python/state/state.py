@@ -32,22 +32,18 @@ class State(Drawable):
             ball.draw(screen)
         self.flag.draw(screen)
 
-    def handle_input(self, user_input: Input) -> 'State':
-        def handle_ball_input(ball: Ball, commands: Dict[UUID, Keys]):
+    def _handle_input(self, user_input: Input) -> 'State':
+        def pass_input_to_ball(ball: Ball, commands: Dict[UUID, Keys]):
             if ball.id not in commands:
                 return ball
             return ball.handle_input(commands[ball.id])
-        balls = [handle_ball_input(b, user_input.commands) for b in self.balls]
+        balls = [pass_input_to_ball(b, user_input.commands) for b in self.balls]
         return State(
             balls=balls,
             flag=self.flag
         )
 
-    def next_state(self, dt: int) -> 'State':
-        """
-        :param int dt: time elapsed in milliseconds
-        """
-
+    def _step_time(self, dt: int) -> 'State':
         balls = [b.update(dt) for b in self.balls]
         flag = self.flag
         for b in balls:
@@ -84,6 +80,14 @@ class State(Drawable):
             balls=balls,
             flag=flag,
         )
+
+    def next_state(self, user_input: Input, dt: int) -> 'State':
+        """
+        :param int dt: time elapsed in milliseconds
+        """
+        inputs_applied: 'State' = self._handle_input(user_input)
+        after_time_step: 'State' = inputs_applied._step_time(dt)
+        return after_time_step
 
     def get_ego_ball(self):
         return next(ball for ball in self.balls.values() if ball.team == Team.EGO)
