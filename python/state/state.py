@@ -83,6 +83,7 @@ class State(Drawable):
 
     def next_state(self, user_input: Input, dt: int) -> 'State':
         """
+        :param user_input Input: key presses for each Ball
         :param int dt: time elapsed in milliseconds
         """
         inputs_applied: 'State' = self._handle_input(user_input)
