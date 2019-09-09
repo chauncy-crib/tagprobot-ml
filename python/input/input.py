@@ -26,4 +26,7 @@ class Keys:
 
 @dataclass(frozen=True)
 class Input:
+    """
+    :param commands: mapping from Ball UUIDs to Keys pressed by that Ball.
+    """
     commands: Dict[UUID, Keys]
