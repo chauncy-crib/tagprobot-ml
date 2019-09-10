@@ -4,55 +4,56 @@ All our Python code is written using Python 3.7. The following instructions will
 
 If you don't have `pip3` or `venv` installed (you can check with `pip3 --version`):
 
-```
+```sh
 sudo apt install python3-pip
 sudo apt install python3.7-venv
 ```
 
 Make a virtual environment and install dependencies:
 
-```
-python3.7 -m venv ENV
-source ENV/bin/activate
-pip install -r requirements.txt
+```sh
+make env
+make install
 ```
 
 # Development
 
-Make sure you are in `tagprobot-ml/python/`, and have `ENV` activated.
+Make sure you are in `tagprobot-ml/python/`.
 
 ## Run the code
 
-`./main.py`
+```sh
+make run
+```
 
 ## Linting + Testing
 
 We use `mypy` for type checking, `flake8` for style enforcement, and `unittest` for tests. You can run them like this:
 
-```
-mypy . # type checker
-flake8 # style checker
-python -m unittest
+```sh
+make mypy # type checker
+make lint # style checker
+make test
 ```
 
 There is also a script which runs all three:
 
-```
-./build
+```sh
+make build
 ```
 
 It can also auto-format code first:
 
-```
-./build --fix
+```sh
+make build_fix
 ```
 
 ## Installing packages
 
 If you add a package, make sure you update `requirements.txt` with:
 
-```
-pip freeze > requirements.txt
+```sh
+make freeze
 ```
 
 # Style guide
