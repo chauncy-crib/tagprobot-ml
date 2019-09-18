@@ -13,7 +13,7 @@ freeze:
 	($(call activate);pip freeze > requirements.txt;)
 
 run:
-	($(call activate);./main.py;)
+	($(call activate);python main.py;)
 
 mypy:
 	($(call activate);mypy .;)
