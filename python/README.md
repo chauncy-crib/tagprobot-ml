@@ -56,6 +56,27 @@ If you add a package, make sure you update `requirements.txt` with:
 make freeze
 ```
 
+## Manual Python
+
+You can also manage your own python environment. Here is how you can create and activate a python3 virtual environment with the required dependencies:
+
+```sh
+python3.7 -m venv ENV # make virtual env
+source ENV/bin/activate # enter virtual env
+pip install -r requirements.txt # install dependencies
+
+python main.py # run the code
+
+mypy . # run type checker
+flake8 # run style checker
+python -m unittest # run unit tests
+
+./build # run the build script
+./build --fix # run the build script with auto-format
+
+pip freeze > requirements.txt # add packages
+```
+
 # Style guide
 
 ## Types
