@@ -4,55 +4,77 @@ All our Python code is written using Python 3.7. The following instructions will
 
 If you don't have `pip3` or `venv` installed (you can check with `pip3 --version`):
 
-```
+```sh
 sudo apt install python3-pip
 sudo apt install python3.7-venv
 ```
 
 Make a virtual environment and install dependencies:
 
-```
-python3.7 -m venv ENV
-source ENV/bin/activate
-pip install -r requirements.txt
+```sh
+make env
+make install
 ```
 
 # Development
 
-Make sure you are in `tagprobot-ml/python/`, and have `ENV` activated.
+Make sure you are in `tagprobot-ml/python/`.
 
 ## Run the code
 
-`python main.py`
+```sh
+make run
+```
 
 ## Linting + Testing
 
 We use `mypy` for type checking, `flake8` for style enforcement, and `unittest` for tests. You can run them like this:
 
-```
-mypy . # type checker
-flake8 # style checker
-python -m unittest
+```sh
+make mypy # type checker
+make lint # style checker
+make test
 ```
 
 There is also a script which runs all three:
 
-```
-./build
+```sh
+make build
 ```
 
 It can also auto-format code first:
 
-```
-./build --fix
+```sh
+make build_fix
 ```
 
 ## Installing packages
 
 If you add a package, make sure you update `requirements.txt` with:
 
+```sh
+make freeze
 ```
-pip freeze > requirements.txt
+
+## Manual Python
+
+You can also manage your own python environment. Here is how you can create and activate a python3 virtual environment with the required dependencies:
+
+```sh
+python3.7 -m venv ENV # make virtual env
+source ENV/bin/activate # enter virtual env
+pip install -r requirements.txt # install dependencies
+
+python main.py # run the code
+
+mypy . # run type checker
+flake8 # run style checker
+python -m unittest # run unit tests
+
+./build # run the build script
+./build --fix # run the build script with auto-format
+
+pip freeze > requirements.txt # add packages
 ```
 
 # Style guide
