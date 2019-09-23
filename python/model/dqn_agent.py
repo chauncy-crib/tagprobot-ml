@@ -27,6 +27,8 @@ def model_input(state: State) -> np.ndarray:
 
 
 # copy paste from https://keon.io/deep-q-learning/
+# a good resouce to learn about DQN:
+# https://towardsdatascience.com/self-learning-ai-agents-part-ii-deep-q-learning-b5ac60c3f47
 class DQNAgent:
     def __init__(self, state_size, action_size):
         self.state_size = state_size
